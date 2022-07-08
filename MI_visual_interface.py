@@ -124,7 +124,15 @@ while True:
 	keys=pygame.key.get_pressed()
 	if keys[pygame.K_SPACE]:
 		start = True 
-		user_text_3 = ''
+		user_text_3 = 'Press (r) to restart trial.'
+
+	if keys[pygame.K_r]:
+		cursor_x_pos = 115
+		frame_count = 0
+		frame_count_2 = 0
+		start = False
+		user_text_3 = 'Press SPACE to start trial. '
+
 
 
 	if(start):
