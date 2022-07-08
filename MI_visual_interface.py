@@ -19,12 +19,17 @@ user_text_3 = 'Trial: #'
 user_text_4 = 'Timer: '
 
 
+#cursor x position
+cursor_x_pos = 115
+
+
 while True: 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: 
 			pygame.quit()
 			exit()
 
+	screen.fill((0,0,0))
 	
 	#red box 
 	#screen.blit(test_surface,(0,0))
@@ -47,6 +52,28 @@ while True:
 
 	#task bar
 	pygame.draw.rect(screen,'BLUE',(100,200,600,30),2, 5)
+
+	#start MI bar
+	pygame.draw.rect(screen,'GREEN',(100,200,10,30),0,2)
+
+	#subject cursor 
+
+	pygame.draw.circle(screen, 'WHITE', (cursor_x_pos,215), 15)
+
+	#stop MI bar
+	pygame.draw.rect(screen,'RED',(400,200,10,30),0,2)
+
+	#stop rest bar
+	pygame.draw.rect(screen,'YELLOW',(690,200,10,30),0,2)
+
+
+	#move cursor 
+	if(cursor_x_pos <= 700):
+		cursor_x_pos +=1
+	if(cursor_x_pos == 700):
+		 cursor_x_pos = 115
+
+	
 
 
 	pygame.display.update()
