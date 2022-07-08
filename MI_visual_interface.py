@@ -2,17 +2,14 @@ import pygame
 from sys import exit
 import random
 
-
-
 pygame.init()
 
 screen = pygame.display.set_mode((800,400))
 pygame.display.set_caption("BMI/Harmony: MI Visual Interface")
-
 clock = pygame.time.Clock()
 
 
-#Text: subject id 
+#Text and font 
 base_font = pygame.font.Font('Gilroy-Light.otf', 16)
 user_text_1 = 'Subject ID'
 user_text_2 = 'Session: #'
@@ -23,8 +20,9 @@ task_col = 'GREEN'
 
 user_text_3 = 'Press SPACE to start trial.'
 
-#cursor x position
+#start and stop cursor position
 cursor_x_pos = 115
+stop_pos = random.randint(350,450)   #350-450
 
 #timer variables 
 tot_sec = 0 
@@ -34,14 +32,14 @@ frame_count_2 = 0
 start = False
 
 
-stop_pos = random.randint(350,450)   #350-450
-
+#main loop 
 while True: 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: 
 			pygame.quit()
 			exit()
 
+	#fill the screen with black after movement
 	screen.fill((0,0,0))
 
 
@@ -134,7 +132,7 @@ while True:
 		user_text_3 = 'Press SPACE to start trial. '
 
 
-
+	#once space is pressed, start countdown 
 	if(start):
 		frame_count_2 +=1
 
@@ -145,6 +143,6 @@ while True:
 	
 	
 
-	pygame.display.update()
-	clock.tick(60)
+	pygame.display.update()  #screen is updated 
+	clock.tick(60)  #60fps 
 
