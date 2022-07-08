@@ -1,5 +1,8 @@
 import pygame
 from sys import exit
+import random
+
+
 
 pygame.init()
 
@@ -28,8 +31,10 @@ tot_sec = 0
 tot_sec_2 = 0
 frame_count = 0
 frame_count_2 = 0
-
 start = False
+
+
+stop_pos = random.randint(350,450)   #350-450
 
 while True: 
 	for event in pygame.event.get():
@@ -62,20 +67,19 @@ while True:
 
 	#text box_4
 	text_surface_4 = base_font.render('Timer: ' + str(tot_sec), False, (255,255,255))
-	screen.blit(text_surface_4, (650,100))
+	screen.blit(text_surface_4, (642,100))
 
 	#task bar
 	pygame.draw.rect(screen,'BLUE',(100,200,600,30),2, 5)
 
+	#subject cursor 
+	pygame.draw.circle(screen, 'WHITE', (cursor_x_pos,215), 15)
+
 	#start MI bar
 	pygame.draw.rect(screen,'GREEN',(100,200,10,30),0,2)
 
-	#subject cursor 
-
-	pygame.draw.circle(screen, 'WHITE', (cursor_x_pos,215), 15)
-
 	#stop MI bar
-	pygame.draw.rect(screen,'RED',(400,200,10,30),0,2)
+	pygame.draw.rect(screen,'RED',(stop_pos,200,10,30),0,2)
 
 	#stop rest bar
 	pygame.draw.rect(screen,'YELLOW',(690,200,10,30),0,2)
@@ -95,14 +99,14 @@ while True:
 		frame_count += 1
 		#move cursor 
 		#current task instruction 
-		if(cursor_x_pos >= 400):
+		if(cursor_x_pos >= stop_pos):
 			task_des = "End MI...Rest"
 			task_col = 'RED'
-		if(cursor_x_pos < 400):
+		if(cursor_x_pos < stop_pos):
 			task_des = "Begin MI"
 			task_col = 'GREEN'
 		if(cursor_x_pos <= 700):     #updating cursor position
-			cursor_x_pos +=1
+			cursor_x_pos +=1         #Speed of the cursor 
 		if(cursor_x_pos == 700):		#stoping cursor at end line 
 			cursor_x_pos = 700
 		if(tot_sec == 11): 			#after 10 sec, reset all variables 
@@ -112,6 +116,8 @@ while True:
 		 	frame_count_2 = 0
 		 	start = False
 		 	user_text_3 = 'Press SPACE to start trial. '
+		 	stop_pos = random.randint(350,450) 
+		 	print(stop_pos)
 
 
 	#once space is pressed, start the trial, countdown 
@@ -126,7 +132,7 @@ while True:
 
 
 	#timer for the game
-	tot_sec = round((frame_count/60)%60)
+	tot_sec = round(((frame_count/60)%60),2)
 	tot_sec_2 = round((frame_count_2/60)%60)
 	
 	
