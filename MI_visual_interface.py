@@ -14,9 +14,11 @@ base_font = pygame.font.Font('Gilroy-Light.otf', 16)
 user_text_1 = 'Subject ID'
 user_text_2 = 'Session: #'
 #trial count
-trial_cnt = 0
+trial_cnt = 1
 task_des = "Begin MI"
 task_col = 'GREEN'
+
+user_text_3 = 'Press SPACE to start trial.'
 
 #cursor x position
 cursor_x_pos = 115
@@ -41,6 +43,10 @@ while True:
 	#task box
 	text_surface_5= base_font.render(task_des, False, task_col)
 	screen.blit(text_surface_5, (370,100))
+
+	#User prompt
+	text_surface_6= base_font.render(user_text_3, False, 'WHITE')
+	screen.blit(text_surface_6, (300,250))
 
 	#text box_1
 	text_surface_1 = base_font.render(user_text_1, False, (255,255,255))
@@ -76,6 +82,7 @@ while True:
 
 	
 	#count down timer 
+	
 	if(tot_sec_2 < 3):
 		task_des = str(3-tot_sec_2)
 		task_col = 'WHITE'
@@ -104,13 +111,16 @@ while True:
 		 	frame_count = 0
 		 	frame_count_2 = 0
 		 	start = False
+		 	user_text_3 = 'Press SPACE to start trial. '
 
 
 	#once space is pressed, start the trial, countdown 
 	keys=pygame.key.get_pressed()
 	if keys[pygame.K_SPACE]:
 		start = True 
-	
+		user_text_3 = ''
+
+
 	if(start):
 		frame_count_2 +=1
 
