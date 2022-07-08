@@ -27,6 +27,8 @@ tot_sec_2 = 0
 frame_count = 0
 frame_count_2 = 0
 
+start = False
+
 while True: 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: 
@@ -72,7 +74,6 @@ while True:
 	#stop rest bar
 	pygame.draw.rect(screen,'YELLOW',(690,200,10,30),0,2)
 
-	#main engine
 	
 	#count down timer 
 	if(tot_sec_2 < 3):
@@ -93,21 +94,31 @@ while True:
 		if(cursor_x_pos < 400):
 			task_des = "Begin MI"
 			task_col = 'GREEN'
-		if(cursor_x_pos <= 700):
+		if(cursor_x_pos <= 700):     #updating cursor position
 			cursor_x_pos +=1
-		if(cursor_x_pos == 700):
+		if(cursor_x_pos == 700):		#stoping cursor at end line 
 			cursor_x_pos = 700
-		if(tot_sec == 11): 
+		if(tot_sec == 11): 			#after 10 sec, reset all variables 
 		 	cursor_x_pos = 115
 		 	trial_cnt +=1
 		 	frame_count = 0
 		 	frame_count_2 = 0
+		 	start = False
+
+
+	#once space is pressed, start the trial, countdown 
+	keys=pygame.key.get_pressed()
+	if keys[pygame.K_SPACE]:
+		start = True 
+	
+	if(start):
+		frame_count_2 +=1
 
 
 	#timer for the game
 	tot_sec = round((frame_count/60)%60)
 	tot_sec_2 = round((frame_count_2/60)%60)
-	frame_count_2 += 1
+	
 	
 
 	pygame.display.update()
