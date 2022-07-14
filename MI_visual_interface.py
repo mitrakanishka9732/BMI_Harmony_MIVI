@@ -2,6 +2,7 @@ import pygame
 from sys import exit
 import random
 
+
 pygame.init()
 
 screen = pygame.display.set_mode((800,400))
@@ -21,6 +22,7 @@ task_col = 'GREEN'
 user_text_3 = 'Press SPACE to start trial.'
 
 #start and stop cursor position
+cursor_col = 'WHITE'
 cursor_x_pos = 115
 stop_pos = random.randint(350,450)   #350-450
 
@@ -40,7 +42,7 @@ while True:
 			exit()
 
 	#fill the screen with black after movement
-	screen.fill((0,0,0))
+	screen.fill('BLACK')
 
 
 	#task box
@@ -71,7 +73,7 @@ while True:
 	pygame.draw.rect(screen,'BLUE',(100,200,600,30),2, 5)
 
 	#subject cursor 
-	pygame.draw.circle(screen, 'WHITE', (cursor_x_pos,215), 15)
+	pygame.draw.circle(screen, cursor_col, (cursor_x_pos,215), 15)
 
 	#start MI bar
 	pygame.draw.rect(screen,'GREEN',(100,200,10,30),0,2)
@@ -92,14 +94,18 @@ while True:
 	if(tot_sec_2 == 3):
 		task_des = 'GO!'
 		task_col = 'GREEN'
+		#######################START Trigger 2################
 	#after countdown, begin MI, increase x_pos
 	if(tot_sec_2 > 3):
 		frame_count += 1
 		#move cursor 
+		cursor_col = 'GREEN'
 		#current task instruction 
 		if(cursor_x_pos >= stop_pos):
 			task_des = "End MI...Rest"
 			task_col = 'RED'
+			cursor_col = 'RED'
+			#######################START Trigger 3################
 		if(cursor_x_pos < stop_pos):
 			task_des = "Begin MI"
 			task_col = 'GREEN'
@@ -107,6 +113,7 @@ while True:
 			cursor_x_pos +=1         #Speed of the cursor 
 		if(cursor_x_pos == 700):		#stoping cursor at end line 
 			cursor_x_pos = 700
+			#######################START Trigger 4################
 		if(tot_sec == 11): 			#after 10 sec, reset all variables 
 		 	cursor_x_pos = 115
 		 	trial_cnt +=1
@@ -116,11 +123,13 @@ while True:
 		 	user_text_3 = 'Press SPACE to start trial. '
 		 	stop_pos = random.randint(350,450) 
 		 	print(stop_pos)
+		 	cursor_col = 'WHITE'
 
 
 	#once space is pressed, start the trial, countdown 
 	keys=pygame.key.get_pressed()
 	if keys[pygame.K_SPACE]:
+		#######################START Trigger 1################
 		start = True 
 		user_text_3 = 'Press (r) to restart trial.'
 
