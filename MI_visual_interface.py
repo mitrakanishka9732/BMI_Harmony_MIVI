@@ -33,18 +33,30 @@ frame_count = 0
 frame_count_2 = 0
 start = False
 
+#run once
+run_once_00 = 0
+run_once_0 = 0
+run_once = 0
+run_once_1 = 0
+run_once_2 = 0
+run_once_3 = 0
 
 #main loop 
 while True: 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: 
 			#######################STOP TRIAL TRIGGER################
+			if run_once_3 == 0:
+				print(2000)
+				run_once_3 = 1
 			pygame.quit()
 			exit()
 
+	if run_once_00 == 0:
+		print(1000)
+		run_once_00 = 1
 	#fill the screen with black after movement
 	screen.fill('BLACK')
-
 
 	#task box
 	text_surface_5= base_font.render(task_des, False, task_col)
@@ -96,6 +108,9 @@ while True:
 		task_des = 'GO!'
 		task_col = 'GREEN'
 		#######################START Trigger 2################
+		if run_once == 0:
+			print(100)
+			run_once = 1
 	#after countdown, begin MI, increase x_pos
 	if(tot_sec_2 > 3):
 		frame_count += 1
@@ -107,6 +122,9 @@ while True:
 			task_col = 'RED'
 			cursor_col = 'RED'
 			#######################START Trigger 3################
+			if run_once_2 == 0:
+				print(500)
+				run_once_2 = 1
 		if(cursor_x_pos < stop_pos):
 			task_des = "Begin MI"
 			task_col = 'GREEN'
@@ -115,22 +133,33 @@ while True:
 		if(cursor_x_pos == 1200):		#stoping cursor at end line 
 			cursor_x_pos = 1200
 			#######################START Trigger 4################
-		if(tot_sec == 11): 			#after 10 sec, reset all variables 
-		 	cursor_x_pos = 200
-		 	trial_cnt +=1
-		 	frame_count = 0
-		 	frame_count_2 = 0
-		 	start = False
-		 	user_text_3 = 'Press SPACE to start trial. '
-		 	stop_pos = random.randint(600,800) 
-		 	print(stop_pos)
-		 	cursor_col = 'WHITE'
+		if(tot_sec == 10):
+			if run_once_1 == 0:
+				print(900)
+				run_once_1 = 1
+		if(tot_sec == 11): 			#after 10 sec, reset all variables	 
+			cursor_x_pos = 200
+			trial_cnt +=1
+			frame_count = 0
+			frame_count_2 = 0
+			start = False
+			user_text_3 = 'Press SPACE to start trial. '
+			stop_pos = random.randint(600,800) 
+			cursor_col = 'WHITE'
+			run_once_0 = 0
+			run_once = 0
+			run_once_1 = 0
+			run_once_2 = 0
+			run_once_3 = 0
 
 
 	#once space is pressed, start the trial, countdown 
 	keys=pygame.key.get_pressed()
 	if keys[pygame.K_SPACE]:
 		#######################START Trigger 1################
+		if run_once_0 == 0:
+			print(300)
+			run_once_0 = 1
 		start = True 
 		user_text_3 = 'Press (r) to restart trial.'
 
