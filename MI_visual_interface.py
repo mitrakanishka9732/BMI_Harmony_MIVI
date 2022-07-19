@@ -5,13 +5,13 @@ import random
 
 pygame.init()
 
-screen = pygame.display.set_mode((800,400))
+screen = pygame.display.set_mode((1400,800))
 pygame.display.set_caption("BMI/Harmony: MI Visual Interface")
 clock = pygame.time.Clock()
 
 
 #Text and font 
-base_font = pygame.font.Font('Gilroy-Light.otf', 16)
+base_font = pygame.font.Font('Gilroy-Light.otf', 32)
 user_text_1 = 'Subject ID'
 user_text_2 = 'Session: #'
 #trial count
@@ -23,8 +23,8 @@ user_text_3 = 'Press SPACE to start trial.'
 
 #start and stop cursor position
 cursor_col = 'WHITE'
-cursor_x_pos = 115
-stop_pos = random.randint(350,450)   #350-450
+cursor_x_pos = 200
+stop_pos = random.randint(600,800)   #350-450
 
 #timer variables 
 tot_sec = 0 
@@ -38,6 +38,7 @@ start = False
 while True: 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: 
+			#######################STOP TRIAL TRIGGER################
 			pygame.quit()
 			exit()
 
@@ -47,42 +48,42 @@ while True:
 
 	#task box
 	text_surface_5= base_font.render(task_des, False, task_col)
-	screen.blit(text_surface_5, (370,100))
+	screen.blit(text_surface_5, (650,250))
 
 	#User prompt
 	text_surface_6= base_font.render(user_text_3, False, 'WHITE')
-	screen.blit(text_surface_6, (300,250))
+	screen.blit(text_surface_6, (550,500))
 
 	#text box_1
 	text_surface_1 = base_font.render(user_text_1, False, (255,255,255))
-	screen.blit(text_surface_1, (100,100))
+	screen.blit(text_surface_1, (200,200))
 
 	#text box_2
 	text_surface_2 = base_font.render(user_text_2, False, (255,255,255))
-	screen.blit(text_surface_2, (100,120))
+	screen.blit(text_surface_2, (200,250))
 
 	#text box_3
 	text_surface_3 = base_font.render('Trial: ' + str(trial_cnt), False, (255,255,255))
-	screen.blit(text_surface_3, (100,140))
+	screen.blit(text_surface_3, (200,300))
 
 	#text box_4
 	text_surface_4 = base_font.render('Timer: ' + str(tot_sec), False, (255,255,255))
-	screen.blit(text_surface_4, (642,100))
+	screen.blit(text_surface_4, (1060,200))
 
 	#task bar
-	pygame.draw.rect(screen,'BLUE',(100,200,600,30),2, 5)
+	pygame.draw.rect(screen,'BLUE',(200,400,1000,50),2, 5)
 
 	#subject cursor 
-	pygame.draw.circle(screen, cursor_col, (cursor_x_pos,215), 15)
+	pygame.draw.circle(screen, cursor_col, (cursor_x_pos,425), 25)
 
 	#start MI bar
-	pygame.draw.rect(screen,'GREEN',(100,200,10,30),0,2)
+	pygame.draw.rect(screen,'GREEN',(200,400,20,50),0,2)
 
 	#stop MI bar
-	pygame.draw.rect(screen,'RED',(stop_pos,200,10,30),0,2)
+	pygame.draw.rect(screen,'RED',(stop_pos,400,20,50),0,2)
 
 	#stop rest bar
-	pygame.draw.rect(screen,'YELLOW',(690,200,10,30),0,2)
+	pygame.draw.rect(screen,'YELLOW',(1190,400,20,50),0,2)
 
 	
 	#count down timer 
@@ -109,19 +110,19 @@ while True:
 		if(cursor_x_pos < stop_pos):
 			task_des = "Begin MI"
 			task_col = 'GREEN'
-		if(cursor_x_pos <= 700):     #updating cursor position
-			cursor_x_pos +=1         #Speed of the cursor 
-		if(cursor_x_pos == 700):		#stoping cursor at end line 
-			cursor_x_pos = 700
+		if(cursor_x_pos <= 1200):     #updating cursor position
+			cursor_x_pos +=1.6         #Speed of the cursor 
+		if(cursor_x_pos == 1200):		#stoping cursor at end line 
+			cursor_x_pos = 1200
 			#######################START Trigger 4################
 		if(tot_sec == 11): 			#after 10 sec, reset all variables 
-		 	cursor_x_pos = 115
+		 	cursor_x_pos = 200
 		 	trial_cnt +=1
 		 	frame_count = 0
 		 	frame_count_2 = 0
 		 	start = False
 		 	user_text_3 = 'Press SPACE to start trial. '
-		 	stop_pos = random.randint(350,450) 
+		 	stop_pos = random.randint(600,800) 
 		 	print(stop_pos)
 		 	cursor_col = 'WHITE'
 
@@ -134,10 +135,11 @@ while True:
 		user_text_3 = 'Press (r) to restart trial.'
 
 	if keys[pygame.K_r]:
-		cursor_x_pos = 115
+		cursor_x_pos = 200
 		frame_count = 0
 		frame_count_2 = 0
 		start = False
+		cursor_col = 'WHITE'
 		user_text_3 = 'Press SPACE to start trial. '
 
 
