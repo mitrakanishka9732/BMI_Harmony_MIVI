@@ -5,7 +5,7 @@ import random
 
 pygame.init()
 
-screen = pygame.display.set_mode((1400,800))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 pygame.display.set_caption("BMI/Harmony: MI Visual Interface")
 clock = pygame.time.Clock()
 
@@ -24,7 +24,7 @@ user_text_3 = 'Press SPACE to start trial.'
 #start and stop cursor position
 cursor_col = 'WHITE'
 cursor_x_pos = 200
-stop_pos = random.randint(600,800)   #350-450
+stop_pos = random.randint(650,750)   #350-450
 
 #timer variables 
 tot_sec = 0 
@@ -43,6 +43,8 @@ run_once_3 = 0
 
 #main loop 
 while True: 
+	keys=pygame.key.get_pressed()
+
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT: 
 			#######################STOP TRIAL TRIGGER################
@@ -51,6 +53,13 @@ while True:
 				run_once_3 = 1
 			pygame.quit()
 			exit()
+	if keys[pygame.K_ESCAPE]:
+		if run_once_3 == 0:
+				print(2000)
+				run_once_3 = 1
+		pygame.quit()
+		exit()
+
 
 	if run_once_00 == 0:
 		print(1000)
@@ -85,11 +94,11 @@ while True:
 	#task bar
 	pygame.draw.rect(screen,'BLUE',(200,400,1000,50),2, 5)
 
-	#subject cursor 
-	pygame.draw.circle(screen, cursor_col, (cursor_x_pos,425), 25)
-
 	#start MI bar
 	pygame.draw.rect(screen,'GREEN',(200,400,20,50),0,2)
+
+	#subject cursor 
+	pygame.draw.circle(screen, cursor_col, (cursor_x_pos,425), 25)
 
 	#stop MI bar
 	pygame.draw.rect(screen,'RED',(stop_pos,400,20,50),0,2)
@@ -100,11 +109,11 @@ while True:
 	
 	#count down timer 
 	
-	if(tot_sec_2 < 3):
-		task_des = str(3-tot_sec_2)
+	if(tot_sec_2 < 5):
+		task_des = str(5-tot_sec_2)
 		task_col = 'WHITE'
 	#at 0 sec, task des is GO
-	if(tot_sec_2 == 3):
+	if(tot_sec_2 == 5):
 		task_des = 'GO!'
 		task_col = 'GREEN'
 		#######################START Trigger 2################
@@ -112,7 +121,7 @@ while True:
 			print(100)
 			run_once = 1
 	#after countdown, begin MI, increase x_pos
-	if(tot_sec_2 > 3):
+	if(tot_sec_2 > 5):
 		frame_count += 1
 		#move cursor 
 		cursor_col = 'GREEN'
@@ -137,14 +146,18 @@ while True:
 			if run_once_1 == 0:
 				print(900)
 				run_once_1 = 1
-		if(tot_sec == 11): 			#after 10 sec, reset all variables	 
+		if(tot_sec > 10):
+			task_des = "Relax"
+			task_col = 'YELLOW'
+			cursor_col = 'YELLOW'	
+		if(tot_sec == 15): 			#after 10 sec, reset all variables	 
 			cursor_x_pos = 200
 			trial_cnt +=1
 			frame_count = 0
 			frame_count_2 = 0
-			start = False
+			start = True
 			user_text_3 = 'Press SPACE to start trial. '
-			stop_pos = random.randint(600,800) 
+			stop_pos = random.randint(650,750) 
 			cursor_col = 'WHITE'
 			run_once_0 = 0
 			run_once = 0
@@ -154,7 +167,7 @@ while True:
 
 
 	#once space is pressed, start the trial, countdown 
-	keys=pygame.key.get_pressed()
+	
 	if keys[pygame.K_SPACE]:
 		#######################START Trigger 1################
 		if run_once_0 == 0:
@@ -170,6 +183,7 @@ while True:
 		start = False
 		cursor_col = 'WHITE'
 		user_text_3 = 'Press SPACE to start trial. '
+	
 
 
 	#once space is pressed, start countdown 
@@ -182,7 +196,6 @@ while True:
 	tot_sec_2 = round((frame_count_2/60)%60)
 	
 	
-
 	pygame.display.update()  #screen is updated 
 	clock.tick(60)  #60fps 
 
