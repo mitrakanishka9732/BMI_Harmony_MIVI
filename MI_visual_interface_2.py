@@ -71,7 +71,7 @@ while True:
 				run_once_3 = 1
 			pygame.quit()
 			exit()
-	if keys[pygame.K_ESCAPE]:
+	if keys[pygame.K_ESCAPE] or trial_cnt == 3:
 		if run_once_3 == 0:
 				print(2000)
 				run_once_3 = 1
@@ -87,27 +87,19 @@ while True:
 
 	#task box
 	text_surface_5= base_font.render(task_des, False, task_col)
-	screen.blit(text_surface_5, (650,250))
+	screen.blit(text_surface_5, (cur_x,cur_y))
 
 	#User prompt
 	text_surface_6= base_font.render(user_text_3, False, WHITE)
-	screen.blit(text_surface_6, (550,500))
-
-	#text box_1
-	text_surface_1 = base_font.render(user_text_1, False, (255,255,255))
-	screen.blit(text_surface_1, (200,200))
-
-	#text box_2
-	text_surface_2 = base_font.render(user_text_2, False, (255,255,255))
-	screen.blit(text_surface_2, (200,250))
+	screen.blit(text_surface_6, (cur_x-175,cur_y-400))
 
 	#text box_3
 	text_surface_3 = base_font.render('Trial: ' + str(trial_cnt), False, (255,255,255))
-	screen.blit(text_surface_3, (200,300))
+	screen.blit(text_surface_3, (sx_pos*(1/4),200))
 
 	#text box_4
 	text_surface_4 = base_font.render('Timer: ' + str(tot_sec), False, (255,255,255))
-	screen.blit(text_surface_4, (1060,200))
+	screen.blit(text_surface_4, (sx_pos*(3/4),200))
 
 	#task tube
 	pygame.draw.circle(screen, BLUE, (int(sx_pos/2),int(sy_pos/2)+100), 350, 3)
@@ -123,7 +115,9 @@ while True:
 	pygame.draw.circle(screen, cursor_col, (325*math.cos(angle1)+(cur_x), 325*math.sin(angle1)+(cur_y+100)), 25)
 
 	#stop MI bar
-	pygame.draw.rect(screen,RED,(cur_x,cur_y+400,20,50),0)
+	#pygame.draw.rect(screen,RED,(cur_x,cur_y+400,20,50),0)
+	pygame.draw.rect(screen,RED,(325*math.cos(10)+(cur_x), 325*math.sin(10)+(cur_y+75),20,50),0)
+
 
 	#stop rest bar
 	pygame.draw.rect(screen,YELLOW,(cur_x-20,cur_y-250,20,50),0)
@@ -175,6 +169,7 @@ while True:
 			cursor_col = YELLOW	
 		if(tot_sec == 15): 			#after 10 sec, reset all variables	 
 			cursor_x_pos = 200
+			angle1 = 4.75; 
 			trial_cnt +=1
 			frame_count = 0
 			frame_count_2 = 0
@@ -201,6 +196,7 @@ while True:
 
 	if keys[pygame.K_r]:
 		cursor_x_pos = 200
+		angle1 = 4.75; 
 		frame_count = 0
 		frame_count_2 = 0
 		start = False
