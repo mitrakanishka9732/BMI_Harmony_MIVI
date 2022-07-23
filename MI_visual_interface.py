@@ -92,19 +92,19 @@ while True:
 	screen.blit(text_surface_4, (1060,200))
 
 	#task bar
-	pygame.draw.rect(screen,'BLUE',(200,400,1000,50),2, 5)
+	pygame.draw.rect(screen,'BLUE',(200,400,1000,50),2 )
 
 	#start MI bar
-	pygame.draw.rect(screen,'GREEN',(200,400,20,50),0,2)
+	pygame.draw.rect(screen,'GREEN',(200,400,20,50),0 )
 
 	#subject cursor 
 	pygame.draw.circle(screen, cursor_col, (cursor_x_pos,425), 25)
 
 	#stop MI bar
-	pygame.draw.rect(screen,'RED',(stop_pos,400,20,50),0,2)
+	pygame.draw.rect(screen,'RED',(stop_pos,400,20,50),0 )
 
 	#stop rest bar
-	pygame.draw.rect(screen,'YELLOW',(1190,400,20,50),0,2)
+	pygame.draw.rect(screen,'YELLOW',(1190,400,20,50),0)
 
 	
 	#count down timer 
@@ -127,7 +127,7 @@ while True:
 		cursor_col = 'GREEN'
 		#current task instruction 
 		if(cursor_x_pos >= stop_pos):
-			task_des = "End MI...Rest"
+			task_des = "End MI!"
 			task_col = 'RED'
 			cursor_col = 'RED'
 			#######################START Trigger 3################
@@ -135,7 +135,7 @@ while True:
 				print(500)
 				run_once_2 = 1
 		if(cursor_x_pos < stop_pos):
-			task_des = "Begin MI"
+			task_des = "Begin MI!"
 			task_col = 'GREEN'
 		if(cursor_x_pos <= 1200):     #updating cursor position
 			cursor_x_pos +=1.6         #Speed of the cursor 
@@ -146,11 +146,11 @@ while True:
 			if run_once_1 == 0:
 				print(900)
 				run_once_1 = 1
-		if(tot_sec > 10):
+		if(tot_sec > 10.25):
 			task_des = "Relax"
 			task_col = 'YELLOW'
 			cursor_col = 'YELLOW'	
-		if(tot_sec == 15): 			#after 10 sec, reset all variables	 
+		if(tot_sec == 16): 			#after 10 sec, reset all variables	 
 			cursor_x_pos = 200
 			trial_cnt +=1
 			frame_count = 0

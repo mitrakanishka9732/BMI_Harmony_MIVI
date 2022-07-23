@@ -1,7 +1,7 @@
 import pygame
 from sys import exit
 import random
-
+import math
 
 
 
@@ -54,6 +54,11 @@ run_once_3 = 0
 
 sx_pos = screen.get_width(); 
 sy_pos = screen.get_height();
+
+cur_x = int(sx_pos/2); 
+cur_y = int(sy_pos/2); 
+angle1 = 4.75; 
+
 #main loop 
 while True: 
 	keys=pygame.key.get_pressed()
@@ -105,20 +110,23 @@ while True:
 	screen.blit(text_surface_4, (1060,200))
 
 	#task tube
-	pygame.draw.circle(screen, BLUE, (int(/2),int(screen.get_height()/2)+120), 350, 3)
-	pygame.draw.circle(screen, BLUE, (int(screen.get_width()/2),int(screen.get_height()/2)+120), 300, 3)
+	pygame.draw.circle(screen, BLUE, (int(sx_pos/2),int(sy_pos/2)+100), 350, 3)
+	pygame.draw.circle(screen, BLUE, (int(sx_pos/2),int(sy_pos/2)+100), 300, 3)
 
 	#start MI bar
-	pygame.draw.rect(screen,GREEN,(200,400,20,50),0)
+	pygame.draw.rect(screen,GREEN,(cur_x,cur_y-250,20,50),0)
 
 	#subject cursor 
 	pygame.draw.circle(screen, cursor_col, (int(cursor_x_pos),425), 25)
 
+	#subject cursor _2
+	pygame.draw.circle(screen, cursor_col, (325*math.cos(angle1)+(cur_x), 325*math.sin(angle1)+(cur_y+100)), 25)
+
 	#stop MI bar
-	pygame.draw.rect(screen,RED,(stop_pos,400,20,50),0)
+	pygame.draw.rect(screen,RED,(cur_x,cur_y+400,20,50),0)
 
 	#stop rest bar
-	pygame.draw.rect(screen,YELLOW,(1190,400,20,50),0)
+	pygame.draw.rect(screen,YELLOW,(cur_x-20,cur_y-250,20,50),0)
 
 	
 	#count down timer 
@@ -152,7 +160,8 @@ while True:
 			task_des = "Begin MI"
 			task_col = GREEN
 		if(cursor_x_pos <= 1200):     #updating cursor position
-			cursor_x_pos +=1.6         #Speed of the cursor 
+			cursor_x_pos +=1.6 
+			angle1 +=0.01;         #Speed of the cursor 
 		if(cursor_x_pos == 1200):		#stoping cursor at end line 
 			cursor_x_pos = 1200
 			#######################START Trigger 4################
