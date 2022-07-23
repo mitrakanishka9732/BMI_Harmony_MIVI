@@ -71,7 +71,7 @@ while True:
 				run_once_3 = 1
 			pygame.quit()
 			exit()
-	if keys[pygame.K_ESCAPE] or trial_cnt == 3:
+	if keys[pygame.K_ESCAPE] or trial_cnt == 21:
 		if run_once_3 == 0:
 				print(2000)
 				run_once_3 = 1
