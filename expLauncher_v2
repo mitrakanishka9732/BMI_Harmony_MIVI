@@ -1,0 +1,127 @@
+#!/bin/bash
+sudo chmod 777 /dev/parport0
+sudo modprobe -r lp
+read -p "subjectID: " subID
+read -p "Session number? " n_session
+read -p "[u] update log, [b] behavioral training, [c] calibration or [t] training? " mode
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+echo $dir
+#########################################################################
+
+if [ "$mode" = "u" ]
+	then
+ 	echo "
+-------------------------------
+----> Updating Log Files <-----
+-------------------------------
+"
+
+python ./visualInterface/update_log.py
+
+elif [ "$mode" = "c" ]
+	then
+ 	echo "
+----------------------------------
+----> Calibration Mode selected <-----
+----------------------------------
+"
+
+# Open GDF and log files
+datetime=$(date +%Y%m%d%H%M%S)
+basename=$dir/data/$subID"_"$datetime"_DecNef_calibration"
+foldername=$dir/data/$subID"_"$(date +%Y%m%d) 
+gdffilename=$basename".gdf"
+logfilename=$basename".log"
+
+mkdir $basename/
+
+echo $gdffilename
+echo $logfilename
+# Open GDF and log files
+cl_rpc openxdf $gdffilename $logfilename ""
+
+sleep 3
+python ./visualInterface/calibration.py
+
+# Close the GDF file
+sleep 3
+cl_rpc closexdf
+mv $basename.* $basename/
+
+mkdir -p $foldername
+mv $basename $foldername
+
+sleep 8
+gnome-terminal --working-directory=$dir/code/cnbiLoop/ -e "matlab v=syslib -nodesktop -nosplash -r EOG_calibrate($subID,$n_session)"
+
+#########################################################################
+elif [ "$mode" = "t" ]
+ 	then
+read -p "run number? " n_run
+#Run ndf_main in background -> online classify
+gnome-terminal --working-directory=$dir/code/cnbiLoop/ -e "matlab v=syslib -nodesktop -nosplash -r ndf_main($subID,$n_session,$n_run)"
+sleep 8
+# Open GDF and log files
+datetime=$(date +%Y%m%d%H%M%S)
+basename=$dir/data/$subID"_"$datetime"_DecNef_training"
+foldername=$dir/data/$subID"_"$(date +%Y%m%d) 
+gdffilename=$basename".gdf"
+logfilename=$basename".log"
+
+mkdir $basename/
+
+echo $gdffilename
+echo $logfilename
+cl_rpc openxdf $gdffilename $logfilename ""
+
+# Run Python Interface
+sleep 3
+python ./visualInterface/main_v4.py $basename $n_run
+
+# Close the GDF file
+sleep 3
+cl_rpc closexdf
+mv $basename.* $basename/
+
+mkdir -p $foldername
+mv $basename $foldername
+
+#Run-wise: build decoder and update threshold
+#Separate script so can run during inter-run rest
+sleep 12
+#matlab v=syslib -nodesktop -nosplash -r decoder_update($subID, $n_session, $n_run)
+gnome-terminal --working-directory=$dir/code/cnbiLoop/ -e "matlab v=syslib -nodesktop -nosplash -r decoder_update($subID,$n_session,$n_run)"
+
+#sleep 5
+
+
+#########################################################################
+elif [ "$mode" = "b" ]
+ 	then
+read -p "pre or post: " behav_run
+# Open GDF and log files
+datetime=$(date +%Y%m%d%H%M%S)
+basename=$dir/data/$subID"_"$datetime"_DecNef_behavior_"$behav_run
+foldername=$dir/data/$subID"_"$(date +%Y%m%d)
+gdffilename=$basename".gdf"
+logfilename=$basename".log"
+
+mkdir $basename/
+echo $gdffilename
+echo $logfilename
+cl_rpc openxdf $gdffilename $logfilename ""
+
+# Run Python Interface
+sleep 3
+python ./visualInterface/main_v4.py $basename 0
+
+# Close the GDF file
+sleep 3
+cl_rpc closexdf
+mv $basename.* $basename/
+
+mkdir -p $foldername
+mv $basename $foldername
+
+fi

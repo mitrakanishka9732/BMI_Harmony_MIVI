@@ -1,4 +1,5 @@
 import pygame
+import sys
 from sys import exit
 import random
 import math
@@ -23,8 +24,6 @@ clock = pygame.time.Clock()
 
 #Text and font 
 base_font = pygame.font.Font('Gilroy-Light.otf', 32)
-user_text_1 = 'Subject ID'
-user_text_2 = 'Session: #'
 #trial count
 trial_cnt = 1
 task_des = "Begin MI"
@@ -34,8 +33,6 @@ user_text_3 = 'Press SPACE to start trial.'
 
 #start and stop cursor position
 cursor_col = WHITE
-cursor_x_pos = 200
-stop_pos = random.randint(650,750)   #350-450
 
 #timer variables 
 tot_sec = 0 
@@ -52,12 +49,15 @@ run_once_1 = 0
 run_once_2 = 0
 run_once_3 = 0
 
-sx_pos = screen.get_width(); 
-sy_pos = screen.get_height();
+sx_pos = screen.get_width()
+sy_pos = screen.get_height()
 
-cur_x = int(sx_pos/2); 
-cur_y = int(sy_pos/2); 
-angle1 = 4.75; 
+cur_x = int(sx_pos/2) 
+cur_y = int(sy_pos/2) 
+angle1 = 4.71
+stop_ang = 4.71
+pi = 3.14
+
 
 #main loop 
 while True: 
@@ -91,7 +91,16 @@ while True:
 
 	#User prompt
 	text_surface_6= base_font.render(user_text_3, False, WHITE)
-	screen.blit(text_surface_6, (cur_x-175,cur_y-400))
+	screen.blit(text_surface_6, (cur_x-125,100))
+
+
+	#text box_2
+	text_surface_1 = base_font.render('Subject ID: ' + (sys.argv[1] if len(sys.argv) > 1 else ' '), False, (255,255,255))
+	screen.blit(text_surface_1, (sx_pos*(1/4),100))
+
+	#text box_2
+	text_surface_2 = base_font.render('Session: ' + (sys.argv[2] if len(sys.argv) > 1 else ' '), False, (255,255,255))
+	screen.blit(text_surface_2, (sx_pos*(1/4),150))
 
 	#text box_3
 	text_surface_3 = base_font.render('Trial: ' + str(trial_cnt), False, (255,255,255))
@@ -99,7 +108,7 @@ while True:
 
 	#text box_4
 	text_surface_4 = base_font.render('Timer: ' + str(tot_sec), False, (255,255,255))
-	screen.blit(text_surface_4, (sx_pos*(3/4),200))
+	screen.blit(text_surface_4, (sx_pos*(3/4),100))
 
 	#task tube
 	pygame.draw.circle(screen, BLUE, (int(sx_pos/2),int(sy_pos/2)+100), 350, 3)
@@ -108,16 +117,11 @@ while True:
 	#start MI bar
 	pygame.draw.rect(screen,GREEN,(cur_x,cur_y-250,20,50),0)
 
-	#subject cursor 
-	pygame.draw.circle(screen, cursor_col, (int(cursor_x_pos),425), 25)
-
 	#subject cursor _2
 	pygame.draw.circle(screen, cursor_col, (325*math.cos(angle1)+(cur_x), 325*math.sin(angle1)+(cur_y+100)), 25)
 
 	#stop MI bar
-	#pygame.draw.rect(screen,RED,(cur_x,cur_y+400,20,50),0)
-	pygame.draw.rect(screen,RED,(325*math.cos(10)+(cur_x), 325*math.sin(10)+(cur_y+75),20,50),0)
-
+	pygame.draw.arc(screen, RED, [int(sx_pos/2)-350,int(sy_pos/2)-250,700,700], (stop_ang), (stop_ang+.05), 50)
 
 	#stop rest bar
 	pygame.draw.rect(screen,YELLOW,(cur_x-20,cur_y-250,20,50),0)
@@ -142,7 +146,7 @@ while True:
 		#move cursor 
 		cursor_col = GREEN
 		#current task instruction 
-		if(cursor_x_pos >= stop_pos):
+		if((angle1-4.71) >= 7.85-(stop_ang+.05)):
 			task_des = "End MI...Rest"
 			task_col = RED
 			cursor_col = RED
@@ -150,14 +154,13 @@ while True:
 			if run_once_2 == 0:
 				print(500)
 				run_once_2 = 1
-		if(cursor_x_pos < stop_pos):
+		if((angle1-4.71) < 7.85-(stop_ang+.05)):
 			task_des = "Begin MI"
 			task_col = GREEN
-		if(cursor_x_pos <= 1200):     #updating cursor position
-			cursor_x_pos +=1.6 
-			angle1 +=0.01;         #Speed of the cursor 
-		if(cursor_x_pos == 1200):		#stoping cursor at end line 
-			cursor_x_pos = 1200
+		if(angle1 <= 10.95):     #updating cursor position
+			angle1 +=0.01;        #Speed of the cursor 
+		if(angle1 == 10.95):		#stoping cursor at end line 
+			angle1 = 10.95
 			#######################START Trigger 4################
 		if(tot_sec == 10):
 			if run_once_1 == 0:
@@ -168,14 +171,11 @@ while True:
 			task_col = YELLOW
 			cursor_col = YELLOW	
 		if(tot_sec == 15): 			#after 10 sec, reset all variables	 
-			cursor_x_pos = 200
-			angle1 = 4.75; 
+			angle1 = 4.71; 
 			trial_cnt +=1
 			frame_count = 0
 			frame_count_2 = 0
 			start = True
-			user_text_3 = 'Press SPACE to start trial. '
-			stop_pos = random.randint(650,750) 
 			cursor_col = WHITE
 			run_once_0 = 0
 			run_once = 0
@@ -195,7 +195,6 @@ while True:
 		user_text_3 = 'Press (r) to restart trial.'
 
 	if keys[pygame.K_r]:
-		cursor_x_pos = 200
 		angle1 = 4.75; 
 		frame_count = 0
 		frame_count_2 = 0
