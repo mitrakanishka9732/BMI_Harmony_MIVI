@@ -1,0 +1,91 @@
+#!/bin/bash
+
+read -p "subjectID: " subID
+read -p "[c] calibrationOnline, [p] practice , [r] run trial? " mode
+
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+echo $dir
+
+#########################################################################
+
+if [ "$mode" = "c" ]
+	then
+ 	echo "
+----------------------------------
+----> Calibration Mode selected <-----
+----------------------------------
+"
+
+# Open GDF and log files
+datetime=$(date +%Y%d%m%H%M%S)
+basename=$dir/data/$subID"_Asynchronous_"$datetime"_calibration"
+foldername=$dir/data/$subID"_"$(date +%Y%d%m) 
+gdffilename=$basename".gdf"
+logfilename=$basename".log"
+
+mkdir $basename/
+
+echo $gdffilename
+echo $logfilename
+cl_rpc openxdf $gdffilename $logfilename ""
+
+# Run python script
+sleep 10
+python3 ~/Desktop/Kanishka/visualInterface/calibration.py
+
+# Close the GDF file
+cl_rpc closexdf
+mv $basename.* $basename/
+
+mkdir -p $foldername
+mv $basename $foldername
+
+#########################################################################
+elif [ "$mode" = "p" ]
+ 	then
+	echo "
+----------------------------------
+---> Practice Mode selected  <----
+----------------------------------
+"
+echo "Launching Practice Visual Interface"
+# Run Python Interface
+sleep 5
+python ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2.py $subID 0
+
+
+#########################################################################
+
+elif [ "$mode" = "r" ]
+	then
+ 	echo "
+----------------------------------
+---->   Trial Run selected  <-----
+----------------------------------
+"
+read -p "Session Number?: " sesNum
+
+# Open GDF and log files
+datetime=$(date +%m%d%Y%H%M)
+basename=$dir/subject_data/$subID"_trialRun_"$sesNum"_"$datetime
+foldername=$dir/subject_data/$subID"_"$datetime
+
+gdffilename=$basename".gdf"
+logfilename=$basename".log"
+
+mkdir $basename/
+
+echo $gdffilename
+echo $logfilename
+cl_rpc openxdf $gdffilename $logfilename ""
+
+
+# Run python script
+sleep 5
+python ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2.py $subID $sesNum
+
+# Close the GDF file
+cl_rpc closexdf
+mv $basename.* $basename/
+
+fi
