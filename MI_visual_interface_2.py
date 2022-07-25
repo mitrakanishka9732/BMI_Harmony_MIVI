@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 
 
 #Text and font 
-base_font = pygame.font.Font('Gilroy-Light.otf', 32)
+base_font = pygame.font.Font('./Kanishka/visualInterface/Gilroy_Light.otf', 32)
 #trial count
 trial_cnt = 1
 task_des = "Begin MI"
@@ -124,7 +124,7 @@ while True:
 	pygame.draw.rect(screen,YELLOW,(cur_x-20,cur_y-250,20,50),0)
 
 	#subject cursor _2
-	pygame.draw.circle(screen, cursor_col, (323*math.cos(angle1)+(cur_x), 323*math.sin(angle1)+(cur_y+100)), 25)
+	pygame.draw.circle(screen, cursor_col, (int(323*math.cos(angle1)+(cur_x)), int(323*math.sin(angle1)+(cur_y+100))), 25)
 
 	
 	#count down timer 
