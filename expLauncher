@@ -1,11 +1,19 @@
 #!/bin/bash
 
 read -p "subjectID: " subID
+read -p "With Harmony [y]es or [n]o?:" rob
 read -p "[c] calibrationOnline, [p] practice , [r] run trial? " mode
 
 dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-echo $dir
 
+echo $dir
+if [[ "$rob" = "y"  ]]; then
+	#statements
+	varRob='wHarmony'
+
+elif [[ "$rob" = "n"  ]]; then
+	varRob='woHarmony'
+fi
 #########################################################################
 
 if [ "$mode" = "c" ]
@@ -17,9 +25,8 @@ if [ "$mode" = "c" ]
 "
 
 # Open GDF and log files
-datetime=$(date +%Y%d%m%H%M%S)
-basename=$dir/data/$subID"_Asynchronous_"$datetime"_calibration"
-foldername=$dir/data/$subID"_"$(date +%Y%d%m) 
+datetime=$(date +%Y%d%m"_"%H%M)
+basename=$dir/calib_data/$subID"_Asynchronous_"$datetime"_calibration"
 gdffilename=$basename".gdf"
 logfilename=$basename".log"
 
@@ -30,15 +37,12 @@ echo $logfilename
 cl_rpc openxdf $gdffilename $logfilename ""
 
 # Run python script
-sleep 10
+sleep 5
 python3 ~/Desktop/Kanishka/visualInterface/calibration.py
 
 # Close the GDF file
 cl_rpc closexdf
 mv $basename.* $basename/
-
-mkdir -p $foldername
-mv $basename $foldername
 
 #########################################################################
 elif [ "$mode" = "p" ]
@@ -51,7 +55,7 @@ elif [ "$mode" = "p" ]
 echo "Launching Practice Visual Interface"
 # Run Python Interface
 sleep 5
-python ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2.py $subID 0
+python3 ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2.py $subID 0
 
 
 #########################################################################
@@ -66,9 +70,8 @@ elif [ "$mode" = "r" ]
 read -p "Session Number?: " sesNum
 
 # Open GDF and log files
-datetime=$(date +%m%d%Y%H%M)
-basename=$dir/subject_data/$subID"_trialRun_"$sesNum"_"$datetime
-foldername=$dir/subject_data/$subID"_"$datetime
+datetime=$(date +%m%d%Y"_"%H%M)
+basename=$dir/subject_data/$subID"_trialRun_"$sesNum"_"$varRob"_"$datetime
 
 gdffilename=$basename".gdf"
 logfilename=$basename".log"
@@ -79,13 +82,14 @@ echo $gdffilename
 echo $logfilename
 cl_rpc openxdf $gdffilename $logfilename ""
 
-
+echo "Launching Visual Interface, Session: "$sesNum
 # Run python script
 sleep 5
-python ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2.py $subID $sesNum
+python3 ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2.py $subID $sesNum
 
 # Close the GDF file
 cl_rpc closexdf
 mv $basename.* $basename/
+cp -R $basename/ ~/Dropbox/test_data/
 
 fi
