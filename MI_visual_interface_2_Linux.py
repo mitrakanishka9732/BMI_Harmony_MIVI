@@ -4,6 +4,40 @@ from sys import exit
 import random
 import math
 
+import cnbiloop
+from cnbiloop import BCI, BCI_tid
+
+bci = BCI_tid.BciInterface()
+
+def sendTiD(Event_):
+        bci.id_msg_bus.SetEvent(Event_)
+        bci.iDsock_bus.sendall(str.encode(bci.id_serializer_bus.Serialize()))
+
+def receiveTiD():
+    data = None
+    try:
+        data = bci.iDsock_bus.recv(512).decode("utf-8")
+        bci.idStreamer_bus.Append(data)
+    except:
+        nS = False
+        dec = 0
+        pass
+    # deserialize ID message
+    if (data):
+        if (bci.idStreamer_bus.Has("<tobiid", "/>")):
+            msg = bci.idStreamer_bus.Extract("<tobiid", "/>")
+            bci.id_serializer_bus.Deserialize(msg)
+            bci.idStreamer_bus.Clear()
+            tmpmsg = int(round(float(bci.id_msg_bus.GetEvent())))
+            # print("Received Message: ", tmpmsg)
+            return tmpmsg
+               
+        elif bci.idStreamer_bus.Has("<tcstatus","/>"):
+            MsgNum = bci.idStreamer_bus.Count("<tcstatus")
+            for i in range(1,MsgNum-1):
+                # Extract most of these messages and trash them     
+                msg_useless = bci.idStreamer_bus.Extract("<tcstatus","/>")
+
 
 
 #color definitions 
@@ -24,7 +58,7 @@ clock = pygame.time.Clock()
 
 
 #Text and font 
-base_font = pygame.font.Font('Gilroy_Light.otf', 32)
+base_font = pygame.font.Font('./visualInterface/Gilroy_Light.otf', 32)
 #trial count
 trial_cnt = 1
 task_des = "Begin MI"
@@ -69,12 +103,14 @@ while True:
 			#######################STOP TRIAL TRIGGER################
 			if run_once_3 == 0:
 				print(2000)
+				sendTiD(2000)
 				run_once_3 = 1
 			pygame.quit()
 			exit()
 	if keys[pygame.K_ESCAPE] or trial_cnt == 21:
 		if run_once_3 == 0:
 				print(2000)
+				sendTiD(2000)
 				run_once_3 = 1
 		pygame.quit()
 		exit()
@@ -82,6 +118,7 @@ while True:
 
 	if run_once_00 == 0:
 		print(1000)
+		sendTiD(1000)
 		run_once_00 = 1
 	#fill the screen with black after movement
 	screen.fill(BLACK)
@@ -140,6 +177,7 @@ while True:
 		#######################START Trigger 2(Begin MI - 100)################
 		if run_once == 0:
 			print(100)
+			sendTiD(100)
 			run_once = 1
 		frame_count += 1
 		#move cursor 
@@ -149,9 +187,10 @@ while True:
 			task_des = "End MI!"
 			task_col = RED
 			cursor_col = RED
-			#######################START Trigger 3################
+			#######################START Trigger 3(end mi - 500)################
 			if run_once_2 == 0:
 				print(500)
+				sendTiD(500)
 				run_once_2 = 1
 		if((angle1-4.71) < 7.85-(stop_ang+.05)):
 			task_des = "Begin MI!"
@@ -160,10 +199,11 @@ while True:
 			angle1 +=0.01;        #Speed of the cursor 
 		if(angle1 == 10.95):		#stoping cursor at end line 
 			angle1 = 10.95
-			#######################START Trigger 4################
 		if(tot_sec == 10.5):
+			#######################START Trigger (end trial - 900)################
 			if run_once_1 == 0:
 				print(900)
+				sendTiD(900)
 				run_once_1 = 1
 		if(tot_sec > 10.5):
 			task_des = "Relax"
@@ -190,6 +230,7 @@ while True:
 		#######################START Trigger 1(Fix - 300)################
 		if run_once_0 == 0:
 			print(300)
+			sendTiD(300)
 			run_once_0 = 1
 		start = True 
 		user_text_3 = 'Press (r) to restart trial.'
@@ -210,6 +251,7 @@ while True:
 		#######################START Trigger 1(Fix - 300)################
 		if run_once_0 == 0:
 			print(300)
+			sendTiD(300)
 			run_once_0 = 1
 
 
