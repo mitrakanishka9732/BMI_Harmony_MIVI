@@ -56,7 +56,7 @@ elif [ "$mode" = "p" ]
 echo "Launching Practice Visual Interface"
 # Run Python Interface
 sleep 5
-python3 ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2_Linux.py $subID 0
+python3 ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2_Linux.py $subID Prac
 
 
 #########################################################################
@@ -84,12 +84,7 @@ echo $gdffilename
 echo $logfilename
 cl_rpc openxdf $gdffilename $logfilename ""
 
-<<<<<<< Updated upstream
 echo "Launching Visual Interface, Session: "$sesNum
-=======
-echo "Launching Visual Interface, Session: " $sesNum
-
->>>>>>> Stashed changes
 # Run python script
 sleep 5
 python3 ~/Desktop/Kanishka/visualInterface/MI_visual_interface_2_Linux.py $subID $sesNum
