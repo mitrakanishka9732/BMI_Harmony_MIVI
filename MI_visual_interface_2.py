@@ -22,16 +22,11 @@ screen = pygame.display.set_mode((1400,1000))
 pygame.display.set_caption("BMI/Harmony: MI Visual Interface")
 clock = pygame.time.Clock()
 
-<<<<<<< Updated upstream
 
-#Text and font 
-base_font = pygame.font.Font('Gilroy_Light.otf', 32)
-=======
 #Text and font 
 base_font = pygame.font.Font('Gilroy-Light.otf', 32) 
 #base_font = pygame.font.Font('./visualInterface/Gilroy_Light.otf', 32)
 
->>>>>>> Stashed changes
 #trial count
 trial_cnt = 1
 task_des = "Begin MI"
