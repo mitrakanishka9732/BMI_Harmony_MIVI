@@ -23,14 +23,8 @@ pygame.display.set_caption("BMI/Harmony: MI Visual Interface")
 clock = pygame.time.Clock()
 
 
-<<<<<<< Updated upstream
 #Text and font 
 base_font = pygame.font.Font('Gilroy_Light.otf', 32)
-=======
-#Text and font
-base_font = pygame.font.Font('Gilroy-Light.otf', 32) 
-#base_font = pygame.font.Font('./visualInterface/Gilroy_Light.otf', 32)
->>>>>>> Stashed changes
 #trial count
 trial_cnt = 1
 task_des = "Begin MI"
@@ -61,9 +55,12 @@ sy_pos = screen.get_height()
 
 cur_x = int(sx_pos/2) 
 cur_y = int(sy_pos/2) 
-angle1 = 4.71
-stop_ang = round(random.uniform(4.25, 4.75), 2)
+angle1 = 4.7107
+stop_ang = round(random.uniform(5.25, 6.25), 2)
+
 pi = 3.14
+
+count_time = 3
 
 
 #main loop 
@@ -121,28 +118,29 @@ while True:
 	pygame.draw.circle(screen, BLUE, (int(sx_pos/2),int(sy_pos/2)+100), 300, 3)
 
 	#start MI bar
-	pygame.draw.rect(screen,GREEN,(cur_x,cur_y-250,20,50),0)
+	#pygame.draw.rect(screen,GREEN,(cur_x,cur_y-250,20,50),0)
+	pygame.draw.arc(screen, GREEN, [int(sx_pos/2)-350,int(sy_pos/2)-250,700,700], 1.55, 1.6, 50)
 
 	#stop MI arc
 	pygame.draw.arc(screen, RED, [int(sx_pos/2)-350,int(sy_pos/2)-250,700,700], (stop_ang), (stop_ang+.05), 50)
 
 	#stop rest bar
-	pygame.draw.rect(screen,YELLOW,(cur_x-20,cur_y-250,20,50),0)
+	pygame.draw.arc(screen, YELLOW, [int(sx_pos/2)-350,int(sy_pos/2)-250,700,700], 3.0, 3.05, 50)
 
 	#subject cursor _2
 	pygame.draw.circle(screen, cursor_col, (int(323*math.cos(angle1)+(cur_x)), int(323*math.sin(angle1)+(cur_y+100))), 25)
 
 	
 	#count down timer 
-	if(tot_sec_2 < 5):
-		task_des = str(5-tot_sec_2)
+	if(tot_sec_2 < count_time):
+		task_des = str(count_time-tot_sec_2)
 		task_col = WHITE
 	#at 0 sec, task des is GO
-	if(tot_sec_2 == 5):
+	if(tot_sec_2 == count_time):
 		task_des = 'GO!'
 		task_col = GREEN
 	#after countdown, begin MI, increase x_pos
-	if(tot_sec_2 > 5):
+	if(tot_sec_2 > count_time):
 		#######################START Trigger 2(Begin MI - 100)################
 		if run_once == 0:
 			print(100)
@@ -162,21 +160,21 @@ while True:
 		if((angle1-4.71) < 7.85-(stop_ang+.05)):
 			task_des = "Begin MI!"
 			task_col = GREEN
-		if(angle1 <= 10.95):     #updating cursor position
+		if(angle1 <= 10.99):     #updating cursor position
 			angle1 +=0.01;        #Speed of the cursor 
-		if(angle1 == 10.95):		#stoping cursor at end line 
-			angle1 = 10.95
-			#######################START Trigger 4################
-		if(tot_sec == 10.5):
+		if(angle1 == 10.99):		#stoping cursor at end line 
+			angle1 = 10.99
+			#######################START Trigger (Start Rest = 900)################
+		if(tot_sec == 8):
 			if run_once_1 == 0:
 				print(900)
 				run_once_1 = 1
-		if(tot_sec > 10.5):
+		if(tot_sec > 8):
 			task_des = "Relax"
 			task_col = YELLOW
 			cursor_col = YELLOW	
 		if(tot_sec == 15): 			#after 10 sec, reset all variables	 
-			angle1 = 4.71; 
+			angle1 = 4.7107; 
 			trial_cnt +=1
 			frame_count = 0
 			frame_count_2 = 0
@@ -187,7 +185,7 @@ while True:
 			run_once_1 = 0
 			run_once_2 = 0
 			run_once_3 = 0
-			stop_ang = round(random.uniform(4.00, 5.00), 2)
+			stop_ang = round(random.uniform(5.25, 6.25), 2)
 
 
 	#once space is pressed, start the trial, countdown 
